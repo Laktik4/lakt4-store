@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Оформление заказа - Lakt4</title>
-    <link rel="stylesheet" href="/lakt4-store/styles.css">
+    <link rel="stylesheet" href="styles.css">
     <style>
         .checkout-container {
             max-width: 800px;
@@ -161,83 +161,87 @@
         <nav>
             <div class="logo">Lakt4</div>
             <ul class="nav-links">
-                <li><a href="/lakt4-store/index.html">Вещи</a></li>
-                <li><a href="/lakt4-store/cart.html">Корзина</a></li>
-                <li><a href="/lakt4-store/profile.html">Профиль</a></li>
+                <li><a href="index.html">Вещи</a></li>
+                <li><a href="cart.html">Корзина</a></li>
+                <li><a href="profile.html">Профиль</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
         <div class="checkout-container">
-            <h1 class="checkout-title">Оформление заказа</h1>
+            <h1>Оформление заказа</h1>
             
-            <form id="checkoutForm" onsubmit="return validateCheckoutForm(this)">
-                <div class="form-group">
-                    <label for="name">Имя</label>
-                    <input type="text" id="name" name="name" required pattern=".{2,}" title="Минимум 2 символа">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="phone">Телефон</label>
-                    <input type="tel" id="phone" name="phone" required pattern="\+?[0-9]{10,15}" title="Введите корректный номер телефона">
-                </div>
-                <div class="form-group">
-                    <label for="address">Адрес доставки</label>
-                    <textarea id="address" name="address" required minlength="10"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="city">Город</label>
-                    <input type="text" id="city" required>
-                </div>
-
-                <div class="order-summary">
-                    <h2>Ваш заказ</h2>
-                    <div class="order-items" id="orderItems">
-                        <!-- Items will be loaded here -->
+            <form id="checkoutForm" class="checkout-form">
+                <div class="form-section">
+                    <h2>Контактная информация</h2>
+                    <div class="form-group">
+                        <label for="name">Имя:</label>
+                        <input type="text" id="name" name="name" required>
                     </div>
-                    <div class="total-amount">
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Телефон:</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2>Адрес доставки</h2>
+                    <div class="form-group">
+                        <label for="address">Адрес:</label>
+                        <input type="text" id="address" name="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="city">Город:</label>
+                        <input type="text" id="city" name="city" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2>Ваш заказ</h2>
+                    <div id="orderItems" class="order-items">
+                        <!-- Товары будут добавлены через JavaScript -->
+                    </div>
+                    <div class="order-total">
                         Итого: <span id="totalAmount">0</span> Kč
                     </div>
                 </div>
 
-                <div class="payment-methods">
-                    <h3>Выберите способ оплаты:</h3>
-                    
-                    <!-- PayPal -->
-                    <div class="payment-method">
-                        <input type="radio" id="paypal" name="payment" value="paypal">
-                        <label for="paypal">
-                            <img src="/lakt4-store/assets/images/paypal-logo.svg" alt="PayPal" class="payment-icon">
-                            PayPal
-                        </label>
-                    </div>
+                <div class="form-section">
+                    <h2>Способ оплаты</h2>
+                    <div class="payment-methods">
+                        <div class="payment-method">
+                            <input type="radio" id="paypal" name="payment" value="paypal">
+                            <label for="paypal">
+                                <img src="assets/images/paypal-logo.svg" alt="PayPal" class="payment-icon">
+                                PayPal
+                            </label>
+                        </div>
 
-                    <!-- Monobank -->
-                    <div class="payment-method">
-                        <input type="radio" id="monobank" name="payment" value="monobank">
-                        <label for="monobank">
-                            <img src="/lakt4-store/assets/images/monobank-logo.svg" alt="Monobank" class="payment-icon">
-                            Monobank
-                        </label>
-                    </div>
+                        <div class="payment-method">
+                            <input type="radio" id="monobank" name="payment" value="monobank">
+                            <label for="monobank">
+                                <img src="assets/images/monobank-logo.svg" alt="Monobank" class="payment-icon">
+                                Monobank
+                            </label>
+                        </div>
 
-                    <!-- PrivatBank -->
-                    <div class="payment-method">
-                        <input type="radio" id="privatbank" name="payment" value="privatbank">
-                        <label for="privatbank">
-                            <img src="/lakt4-store/assets/images/privatbank-logo.svg" alt="PrivatBank" class="payment-icon">
-                            PrivatBank
-                        </label>
+                        <div class="payment-method">
+                            <input type="radio" id="privatbank" name="payment" value="privatbank">
+                            <label for="privatbank">
+                                <img src="assets/images/privatbank-logo.svg" alt="PrivatBank" class="payment-icon">
+                                PrivatBank
+                            </label>
+                        </div>
                     </div>
                 </div>
 
                 <div class="button-group">
-                    <button type="button" class="back-button" onclick="window.location.href='/lakt4-store/cart.html'">
+                    <button type="button" class="back-button" onclick="window.location.href='cart.html'">
                         Вернуться в корзину
                     </button>
                     <button type="submit" class="pay-button" id="payButton">Оплатить</button>
@@ -250,13 +254,12 @@
         <p class="copyright">&copy; 2025 Lakt4. Все права защищены.</p>
         <div class="social-links">
             <a href="https://www.instagram.com/llakt4/" target="_blank" class="social-link">
-                <img src="/lakt4-store/assets/images/instagram-icon.svg" alt="Instagram" class="social-icon">
+                <img src="assets/images/instagram-icon.svg" alt="Instagram" class="social-icon">
                 @llakt4
             </a>
         </div>
     </footer>
-
-    <script src="/lakt4-store/script.js"></script>
-    <script src="/lakt4-store/js/payments.js"></script>
+    <script src="script.js"></script>
+    <script src="js/payments.js"></script>
 </body>
 </html>
