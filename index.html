@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lakt4 - Магазин одежды</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Светлая тема */
+        :root {
+            --bg-color: #1a1a1a;
+            --text-color: #fff;
+            --card-bg: #2d2d2d;
+            --hover-color: #3d3d3d;
+            --accent-color: #2d2d2d;
+            --button-hover: #3d3d3d;
+            --footer-bg: #2d2d2d;
+            --nav-bg: #2d2d2d;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        nav {
+            background-color: var(--nav-bg);
+            padding: 1rem;
+            margin: 0;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+        }
+
+        footer {
+            background-color: var(--footer-bg);
+            color: var(--text-color);
+            text-align: center;
+            padding: 1rem;
+            margin-top: auto;
+        }
+
+        .copyright {
+            color: var(--text-color);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #3d3d3d;
+        }
+
+        .product-card:hover {
+            background-color: var(--hover-color);
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #3d3d3d;
+            border-radius: 8px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background-color: var(--button-hover);
+            transform: scale(1.02);
+            border-color: #4d4d4d;
+        }
+
+        .cart-item-fly {
+            position: fixed;
+            z-index: 9999;
+            pointer-events: none;
+            width: 50px;
+            height: 50px;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 50%;
+            transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        @keyframes addedToCart {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .add-to-cart.added {
+            animation: addedToCart 0.5s ease-out;
+            background-color: var(--button-hover);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Lakt4</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Вещи</a></li>
+                <li><a href="cart.html">Корзина</a></li>
+                <li><a href="profile.html">Профиль</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="product-grid" id="productGrid">
+            <!-- Товары будут добавлены через JavaScript -->
+        </div>
+    </main>
+
+    <footer>
+        <p class="copyright">&copy; 2025 Lakt4. Все права защищены.</p>
+        <div class="social-links">
+            <a href="https://www.instagram.com/llakt4/" target="_blank" class="social-link">
+                <img src="assets/images/instagram-icon.svg" alt="Instagram" class="social-icon">
+                @llakt4
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        // Проверяем тему из localStorage при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            const theme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        });
+
+        // Пример данных о товарах
+        const products = [
+            {
+                id: 1,
+                name: 'Stussy x Nike Hoodie',
+                price: 3999,
+                image: 'assets/images/stussy-nike.jpg',
+                description: 'Эксклюзивная коллаборация Stussy x Nike с фирменным логотипом'
+            },
+            {
+                id: 2,
+                name: 'Nike Socks (4 pairs)',
+                price: 200,
+                image: 'assets/images/nike-socks.jpg',
+                description: 'Набор из 4 пар белых спортивных носков Nike с фирменным логотипом'
+            },
+            {
+                id: 3,
+                name: 'Goyard Bag',
+                price: 12999,
+                image: 'assets/images/goyard-bag.jpg',
+                description: 'Элегантная сумка Goyard с фирменным узором и белой кожаной отделкой'
+            },
+            {
+                id: 4,
+                name: 'Nike Sweater',
+                price: 4999,
+                image: 'assets/images/nike-sweater.jpg',
+                description: 'Дизайнерский свитер Nike с уникальным графическим принтом'
+            },
+            {
+                id: 5,
+                name: 'Louis Vuitton Wallet',
+                price: 8999,
+                image: 'assets/images/louis-vuitton-wallet.jpg',
+                description: 'Классический кошелек Louis Vuitton из коллекции Damier Graphite'
+            }
+        ];
+
+        function displayProducts() {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-name">${product.name}</div>
+                    <div class="product-description">${product.description}</div>
+                    <div class="product-price">${product.price} Kč</div>
+                    <button class="add-to-cart" onclick="addToCart(${product.id})">
+                        Добавить в корзину
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(productId) {
+            // Находим товар по ID
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            // Получаем текущую корзину из localStorage
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            // Добавляем товар в корзину
+            cart.push(product);
+            
+            // Сохраняем обновленную корзину
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            // Анимация добавления в корзину
+            const button = event.target;
+            const productCard = button.closest('.product-card');
+            const productImage = productCard.querySelector('.product-image');
+            const cartLink = document.querySelector('a[href="cart.html"]');
+            
+            // Создаем летящее изображение
+            const flyingImage = productImage.cloneNode();
+            flyingImage.style.position = 'fixed';
+            flyingImage.style.height = '100px';
+            flyingImage.style.width = '100px';
+            flyingImage.style.objectFit = 'cover';
+            flyingImage.style.zIndex = '1000';
+            
+            // Получаем координаты
+            const startPos = productImage.getBoundingClientRect();
+            const endPos = cartLink.getBoundingClientRect();
+            
+            flyingImage.style.left = startPos.left + 'px';
+            flyingImage.style.top = startPos.top + 'px';
+            
+            document.body.appendChild(flyingImage);
+            
+            // Анимация
+            flyingImage.style.transition = 'all 0.8s ease-in-out';
+            flyingImage.style.transform = 'scale(0.2)';
+            flyingImage.style.left = endPos.left + 'px';
+            flyingImage.style.top = endPos.top + 'px';
+            
+            // Эффект нажатия кнопки
+            button.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                button.style.transform = 'scale(1)';
+            }, 200);
+            
+            // Удаляем элемент после анимации
+            setTimeout(() => {
+                flyingImage.remove();
+                cartLink.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    cartLink.style.transform = 'scale(1)';
+                }, 200);
+            }, 800);
+        }
+
+        // Вызываем функцию при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            displayProducts();
+        });
+    </script>
+</body>
+</html>

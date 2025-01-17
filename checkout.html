@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оформление заказа - Lakt4</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .checkout-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .checkout-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--text-color);
+        }
+
+        .checkout-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-size: 1.1rem;
+            color: var(--text-color);
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 1rem;
+            border: 1px solid #3d3d3d;
+            border-radius: 8px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #4d4d4d;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(77, 77, 77, 0.2);
+        }
+
+        .order-summary {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #2d2d2d;
+        }
+
+        .order-items {
+            margin-bottom: 1.5rem;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            color: var(--text-color);
+        }
+
+        .total-amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 1rem;
+            color: var(--text-color);
+        }
+
+        .pay-button {
+            display: block;
+            width: 100%;
+            padding: 1.2rem;
+            margin-top: 2rem;
+            background-color: #8B0000;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pay-button:hover {
+            background-color: #A52A2A;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border: 1px solid #3d3d3d;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-method:hover {
+            background-color: var(--hover-color);
+            border-color: #4d4d4d;
+        }
+
+        .payment-method.selected {
+            border-color: #8B0000;
+            background-color: rgba(139, 0, 0, 0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .back-button {
+            display: block;
+            width: 100%;
+            padding: 1.2rem;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid #3d3d3d;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: var(--hover-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Lakt4</div>
+            <div class="nav-links">
+                <a href="index.html">Вещи</a>
+                <a href="cart.html">Корзина</a>
+                <a href="profile.html">Профиль</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="checkout-container">
+            <h1 class="checkout-title">Оформление заказа</h1>
+            
+            <form id="checkoutForm" onsubmit="return validateCheckoutForm(this)">
+                <div class="form-group">
+                    <label for="name">Имя</label>
+                    <input type="text" id="name" name="name" required pattern=".{2,}" title="Минимум 2 символа">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Телефон</label>
+                    <input type="tel" id="phone" name="phone" required pattern="\+?[0-9]{10,15}" title="Введите корректный номер телефона">
+                </div>
+                <div class="form-group">
+                    <label for="address">Адрес доставки</label>
+                    <textarea id="address" name="address" required minlength="10"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="city">Город</label>
+                    <input type="text" id="city" required>
+                </div>
+
+                <div class="order-summary">
+                    <h2>Ваш заказ</h2>
+                    <div class="order-items" id="orderItems">
+                        <!-- Items will be loaded here -->
+                    </div>
+                    <div class="total-amount">
+                        Итого: <span id="totalAmount">0</span> Kč
+                    </div>
+                </div>
+
+                <div class="payment-methods">
+                    <h3>Выберите способ оплаты:</h3>
+                    
+                    <!-- PayPal -->
+                    <div class="payment-method">
+                        <input type="radio" id="paypal" name="payment" value="paypal">
+                        <label for="paypal">
+                            <img src="assets/images/paypal-logo.svg" alt="PayPal" class="payment-icon">
+                            PayPal
+                        </label>
+                    </div>
+
+                    <!-- Monobank -->
+                    <div class="payment-method">
+                        <input type="radio" id="monobank" name="payment" value="monobank">
+                        <label for="monobank">
+                            <img src="assets/images/monobank-logo.svg" alt="Monobank" class="payment-icon">
+                            Monobank
+                        </label>
+                    </div>
+
+                    <!-- PrivatBank -->
+                    <div class="payment-method">
+                        <input type="radio" id="privatbank" name="payment" value="privatbank">
+                        <label for="privatbank">
+                            <img src="assets/images/privatbank-logo.svg" alt="PrivatBank" class="payment-icon">
+                            PrivatBank
+                        </label>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="back-button" onclick="window.location.href='cart.html'">
+                        Вернуться в корзину
+                    </button>
+                    <button type="submit" class="pay-button" id="payButton">Оплатить</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p class="copyright">&copy; 2025 Lakt4. Все права защищены.</p>
+        <div class="social-links">
+            <a href="https://www.instagram.com/llakt4/" target="_blank" class="social-link">
+                <img src="assets/images/instagram-icon.svg" alt="Instagram" class="social-icon">
+                @llakt4
+            </a>
+        </div>
+    </footer>
+
+    <script src="js/validation.js"></script>
+    <script src="js/payments.js"></script>
+    <!-- PayPal SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
+    <!-- Monobank SDK -->
+    <script src="https://api.monobank.ua/sdk/mono.js"></script>
+    <!-- PrivatBank LiqPay SDK -->
+    <script src="https://static.liqpay.ua/libjs/checkout.js"></script>
+    <script>
+        let selectedPayment = '';
+
+        function selectPayment(method) {
+            selectedPayment = method;
+            document.querySelectorAll('.payment-method').forEach(el => {
+                el.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+        }
+
+        // Загружаем товары из корзины
+        function loadOrderItems() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const orderItems = document.getElementById('orderItems');
+            const totalElement = document.getElementById('totalAmount');
+            
+            let total = 0;
+            const itemsHTML = cart.map(item => {
+                total += item.price;
+                return `
+                    <div class="order-item">
+                        <span>${item.name}</span>
+                        <span>${item.price} Kč</span>
+                    </div>
+                `;
+            }).join('');
+            
+            orderItems.innerHTML = itemsHTML;
+            totalElement.textContent = total;
+        }
+
+        // Обработка отправки формы
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!selectedPayment) {
+                alert('Пожалуйста, выберите способ оплаты');
+                return;
+            }
+
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+                city: document.getElementById('city').value,
+                items: JSON.parse(localStorage.getItem('cart') || '[]'),
+                paymentMethod: selectedPayment
+            };
+
+            // В реальном приложении здесь был бы запрос к банковской системе
+            // Для демонстрации просто очищаем корзину и перенаправляем
+            localStorage.setItem('cart', '[]');
+            
+            if (selectedPayment === 'card') {
+                // Перенаправление на страницу оплаты банка
+                window.location.href = 'https://example.com/bank-payment';
+            } else {
+                // Показываем информацию для банковского перевода
+                alert('Спасибо за заказ! Реквизиты для оплаты отправлены на ваш email.');
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            const theme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+            loadOrderItems();
+        });
+    </script>
+</body>
+</html>

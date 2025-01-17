@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина - Lakt4</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Светлая тема */
+        :root {
+            --bg-color: #fff;
+            --text-color: #333;
+            --card-bg: #f5f5f5;
+            --hover-color: #e0e0e0;
+        }
+
+        /* Темная тема */
+        :root[data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #fff;
+            --card-bg: #2d2d2d;
+            --hover-color: #3d3d3d;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .cart-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-title {
+            text-align: center;
+            color: var(--text-color);
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .cart-items {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .cart-item img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-right: 1.5rem;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .item-price {
+            font-weight: bold;
+            color: #FF9800;
+            font-size: 1.1rem;
+        }
+
+        .item-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quantity-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .quantity-btn:hover {
+            background-color: #45a049;
+            transform: scale(1.1);
+        }
+
+        .quantity {
+            font-size: 1.1rem;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .remove-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .remove-btn:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .cart-total {
+            text-align: right;
+            padding-top: 2rem;
+            border-top: 2px solid #2d2d2d;
+            margin-top: 2rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .total-price {
+            font-size: 1.5rem;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .checkout-button {
+            display: block;
+            width: 100%;
+            padding: 1.2rem;
+            margin-top: 2rem;
+            background-color: #8B0000;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkout-button:hover {
+            background-color: #A52A2A;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .cart-item-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-right: 1.5rem;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .cart-item-description {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .cart-item-price {
+            font-weight: bold;
+            color: #FF9800;
+            font-size: 1.1rem;
+        }
+
+        .remove-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .remove-button:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Lakt4</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Вещи</a></li>
+                <li><a href="cart.html">Корзина</a></li>
+                <li><a href="profile.html">Профиль</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="cart-container">
+            <h1 class="cart-title">Корзина</h1>
+            <div class="cart-items">
+                <!-- Товары будут добавлены через JavaScript -->
+            </div>
+            <div class="cart-total">
+                Итого: <span id="totalAmount">0</span> Kč
+            </div>
+            <button class="checkout-button" onclick="window.location.href='checkout.html'">
+                Оформить заказ
+            </button>
+        </div>
+    </main>
+
+    <footer>
+        <p class="copyright">&copy; 2025 Lakt4. Все права защищены.</p>
+        <div class="social-links">
+            <a href="https://www.instagram.com/llakt4/" target="_blank" class="social-link">
+                <img src="assets/images/instagram-icon.svg" alt="Instagram" class="social-icon">
+                @llakt4
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        // Проверяем тему из localStorage при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            const theme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+            displayCartItems();
+        });
+
+        function displayCartItems() {
+            const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartContainer = document.querySelector('.cart-items');
+            const totalElement = document.getElementById('totalAmount');
+            
+            if (cartItems.length === 0) {
+                cartContainer.innerHTML = '<p class="empty-cart">Ваша корзина пуста</p>';
+                totalElement.textContent = '0';
+                return;
+            }
+
+            let total = 0;
+            const itemsHTML = cartItems.map((item, index) => {
+                total += item.price;
+                return `
+                    <div class="cart-item">
+                        <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+                        <div class="cart-item-info">
+                            <h3 class="cart-item-name">${item.name}</h3>
+                            <p class="cart-item-description">${item.description}</p>
+                            <p class="cart-item-price">${item.price} Kč</p>
+                        </div>
+                        <button class="remove-button" onclick="removeFromCart(${index})">
+                            Удалить
+                        </button>
+                    </div>
+                `;
+            }).join('');
+
+            cartContainer.innerHTML = itemsHTML;
+            totalElement.textContent = total;
+        }
+
+        function removeFromCart(index) {
+            let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+            cartItems.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cartItems));
+            displayCartItems();
+        }
+    </script>
+</body>
+</html>

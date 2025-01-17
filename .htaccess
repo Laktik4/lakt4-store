@@ -1,0 +1,30 @@
+# Защита от XSS атак
+Header set X-XSS-Protection "1; mode=block"
+
+# Защита от кликджекинга
+Header set X-Frame-Options "SAMEORIGIN"
+
+# Защита от MIME-type sniffing
+Header set X-Content-Type-Options "nosniff"
+
+# Принудительное использование HTTPS
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Защита от доступа к конфиденциальным файлам
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Отключение листинга директорий
+Options -Indexes
+
+# Защита от SQL-инъекций и XSS в формах
+<IfModule mod_rewrite.c>
+    RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+    RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
+    RewriteRule ^(.*)$ index.php [F,L]
+</IfModule>
