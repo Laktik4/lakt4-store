@@ -38,35 +38,35 @@ function loadOrderItems() {
             id: 1,
             name: "Nike Sweater",
             price: 2999,
-            image: "/lakt4-store/assets/images/nike-sweater.jpg",
+            image: "../assets/images/nike-sweater.jpg",
             description: "Стильный свитер Nike"
         },
         {
             id: 2,
             name: "Louis Vuitton Wallet",
             price: 4999,
-            image: "/lakt4-store/assets/images/lv-wallet.jpg",
+            image: "../assets/images/lv-wallet.jpg",
             description: "Кошелек Louis Vuitton"
         },
         {
             id: 3,
             name: "Goyard Bag",
             price: 7999,
-            image: "/lakt4-store/assets/images/goyard.jpg",
+            image: "../assets/images/goyard.jpg",
             description: "Сумка Goyard"
         },
         {
             id: 4,
             name: "Stussy x Nike",
             price: 3499,
-            image: "/lakt4-store/assets/images/stussy-nike.jpg",
+            image: "../assets/images/stussy-nike.jpg",
             description: "Коллаборация Stussy x Nike"
         },
         {
             id: 5,
             name: "Nike Socks",
             price: 499,
-            image: "/lakt4-store/assets/images/носки.jpg",
+            image: "../assets/images/носки.jpg",
             description: "Носки Nike"
         }
     ];

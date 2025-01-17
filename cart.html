@@ -5,145 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Корзина - Lakt4</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        /* Светлая тема */
-        :root {
-            --bg-color: #fff;
-            --text-color: #333;
-            --card-bg: #f5f5f5;
-            --hover-color: #e0e0e0;
-        }
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Lakt4</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Вещи</a></li>
+                <li><a href="cart.html">Корзина</a></li>
+                <li><a href="profile.html">Профиль</a></li>
+            </ul>
+        </nav>
+    </header>
 
-        /* Темная тема */
-        :root[data-theme="dark"] {
-            --bg-color: #1a1a1a;
-            --text-color: #fff;
-            --card-bg: #2d2d2d;
-            --hover-color: #3d3d3d;
-        }
+    <main>
+        <div class="cart-container">
+            <h1 class="cart-title">Корзина</h1>
+            <div id="cartItems" class="cart-items">
+                <!-- Товары будут добавлены через JavaScript -->
+            </div>
+            <div class="cart-summary">
+                <div class="cart-total">Итого: <span id="totalAmount">0</span> Kč</div>
+                <button class="checkout-button" onclick="window.location.href='checkout.html'">Оформить заказ</button>
+            </div>
+        </div>
+    </main>
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-        }
+    <footer>
+        <p class="copyright">&copy; 2025 Lakt4. Все права защищены.</p>
+        <div class="social-links">
+            <a href="https://www.instagram.com/llakt4/" target="_blank" class="social-link">
+                <img src="assets/images/instagram-icon.svg" alt="Instagram" class="social-icon">
+                @llakt4
+            </a>
+        </div>
+    </footer>
 
-        .cart-container {
-            max-width: 1000px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background-color: var(--card-bg);
-            border-radius: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .cart-title {
-            text-align: center;
-            color: var(--text-color);
-            margin-bottom: 2rem;
-            font-size: 2rem;
-        }
-
-        .cart-items {
-            display: grid;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .cart-item {
-            display: flex;
-            align-items: center;
-            padding: 1rem;
-            background-color: var(--card-bg);
-            border-radius: 15px;
-            position: relative;
-        }
-
-        .cart-item img {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin-right: 1.5rem;
-        }
-
-        .item-details {
-            flex: 1;
-        }
-
-        .item-name {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-color);
-        }
-
-        .item-price {
-            font-weight: bold;
-            color: #FF9800;
-            font-size: 1.1rem;
-        }
-
-        .item-controls {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-top: 0.5rem;
-        }
-
-        .quantity-control {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .quantity-btn {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-
-        .quantity-btn:hover {
-            background-color: #45a049;
-            transform: scale(1.1);
-        }
-
-        .quantity {
-            font-size: 1.1rem;
-            min-width: 40px;
-            text-align: center;
-        }
-
-        .remove-btn {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-        }
-
-        .remove-btn:hover {
-            background-color: #c82333;
-            transform: translateY(-2px);
-        }
-
-        .cart-total {
-            text-align: right;
-            padding-top: 2rem;
-            border-top: 2px solid #2d2d2d;
-            margin-top: 2rem;
-            font-size: 1.5rem;
-            font-weight: bold;
+    <script src="script.js"></script>
+</body>
+</html>
         }
 
         .total-price {

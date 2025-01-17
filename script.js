@@ -44,35 +44,35 @@ function displayProducts() {
             id: 1,
             name: "Nike Sweater",
             price: 2999,
-            image: "/assets/images/nike-sweater.jpg",
+            image: "./assets/images/nike-sweater.jpg",
             description: "Стильный свитер Nike"
         },
         {
             id: 2,
             name: "Louis Vuitton Wallet",
             price: 4999,
-            image: "/assets/images/lv-wallet.jpg",
+            image: "./assets/images/lv-wallet.jpg",
             description: "Кошелек Louis Vuitton"
         },
         {
             id: 3,
             name: "Goyard Bag",
             price: 7999,
-            image: "/assets/images/goyard.jpg",
+            image: "./assets/images/goyard.jpg",
             description: "Сумка Goyard"
         },
         {
             id: 4,
             name: "Stussy x Nike",
             price: 3499,
-            image: "/assets/images/stussy-nike.jpg",
+            image: "./assets/images/stussy-nike.jpg",
             description: "Коллаборация Stussy x Nike"
         },
         {
             id: 5,
             name: "Nike Socks",
             price: 499,
-            image: "/assets/images/носки.jpg",
+            image: "./assets/images/носки.jpg",
             description: "Носки Nike"
         }
     ];
@@ -124,45 +124,6 @@ function displayCart() {
     if (!cartContainer) return;
 
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const products = [
-        {
-            id: 1,
-            name: "Nike Sweater",
-            price: 2999,
-            image: "/assets/images/nike-sweater.jpg",
-            description: "Стильный свитер Nike"
-        },
-        {
-            id: 2,
-            name: "Louis Vuitton Wallet",
-            price: 4999,
-            image: "/assets/images/lv-wallet.jpg",
-            description: "Кошелек Louis Vuitton"
-        },
-        {
-            id: 3,
-            name: "Goyard Bag",
-            price: 7999,
-            image: "/assets/images/goyard.jpg",
-            description: "Сумка Goyard"
-        },
-        {
-            id: 4,
-            name: "Stussy x Nike",
-            price: 3499,
-            image: "/assets/images/stussy-nike.jpg",
-            description: "Коллаборация Stussy x Nike"
-        },
-        {
-            id: 5,
-            name: "Nike Socks",
-            price: 499,
-            image: "/assets/images/носки.jpg",
-            description: "Носки Nike"
-        }
-    ];
-
-    cartContainer.innerHTML = '';
     let total = 0;
 
     if (cart.length === 0) {
@@ -171,26 +132,66 @@ function displayCart() {
         return;
     }
 
-    cart.forEach((productId, index) => {
+    const products = [
+        {
+            id: 1,
+            name: "Nike Sweater",
+            price: 2999,
+            image: "./assets/images/nike-sweater.jpg",
+            description: "Стильный свитер Nike"
+        },
+        {
+            id: 2,
+            name: "Louis Vuitton Wallet",
+            price: 4999,
+            image: "./assets/images/lv-wallet.jpg",
+            description: "Кошелек Louis Vuitton"
+        },
+        {
+            id: 3,
+            name: "Goyard Bag",
+            price: 7999,
+            image: "./assets/images/goyard.jpg",
+            description: "Сумка Goyard"
+        },
+        {
+            id: 4,
+            name: "Stussy x Nike",
+            price: 3499,
+            image: "./assets/images/stussy-nike.jpg",
+            description: "Коллаборация Stussy x Nike"
+        },
+        {
+            id: 5,
+            name: "Nike Socks",
+            price: 499,
+            image: "./assets/images/носки.jpg",
+            description: "Носки Nike"
+        }
+    ];
+
+    const itemsHTML = cart.map((productId, index) => {
         const product = products.find(p => p.id === productId);
         if (product) {
             total += product.price;
-            const cartItem = document.createElement('div');
-            cartItem.className = 'cart-item';
-            cartItem.innerHTML = `
-                <img src="${product.image}" alt="${product.name}" class="cart-item-image">
-                <div class="cart-item-info">
-                    <h3 class="cart-item-name">${product.name}</h3>
-                    <p class="cart-item-description">${product.description}</p>
-                    <p class="cart-item-price">${product.price} Kč</p>
+            return `
+                <div class="cart-item">
+                    <img src="${product.image}" alt="${product.name}">
+                    <div class="cart-item-info">
+                        <h3 class="cart-item-name">${product.name}</h3>
+                        <p class="cart-item-description">${product.description}</p>
+                        <p class="cart-item-price">${product.price} Kč</p>
+                    </div>
+                    <button class="remove-button" onclick="removeFromCart(${index})">
+                        Удалить
+                    </button>
                 </div>
-                <button class="remove-button" onclick="removeFromCart(${index})">
-                    Удалить
-                </button>
             `;
-            cartContainer.appendChild(cartItem);
         }
-    });
+        return '';
+    }).join('');
+
+    cartContainer.innerHTML = itemsHTML;
 
     document.getElementById('totalAmount').textContent = total;
 }
