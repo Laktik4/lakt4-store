@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lakt4 - Магазин одежды</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/lakt4-store/styles.css">
     <style>
         /* Светлая тема */
         :root {
@@ -185,130 +185,6 @@
         </div>
     </footer>
 
-    <script>
-        // Проверяем тему из localStorage при загрузке страницы
-        document.addEventListener('DOMContentLoaded', function() {
-            const theme = localStorage.getItem('theme') || 'dark';
-            document.documentElement.setAttribute('data-theme', theme);
-        });
-
-        // Пример данных о товарах
-        const products = [
-            {
-                id: 1,
-                name: 'Stussy x Nike Hoodie',
-                price: 3999,
-                image: 'assets/images/stussy-nike.jpg',
-                description: 'Эксклюзивная коллаборация Stussy x Nike с фирменным логотипом'
-            },
-            {
-                id: 2,
-                name: 'Nike Socks (4 pairs)',
-                price: 200,
-                image: 'assets/images/nike-socks.jpg',
-                description: 'Набор из 4 пар белых спортивных носков Nike с фирменным логотипом'
-            },
-            {
-                id: 3,
-                name: 'Goyard Bag',
-                price: 12999,
-                image: 'assets/images/goyard-bag.jpg',
-                description: 'Элегантная сумка Goyard с фирменным узором и белой кожаной отделкой'
-            },
-            {
-                id: 4,
-                name: 'Nike Sweater',
-                price: 4999,
-                image: 'assets/images/nike-sweater.jpg',
-                description: 'Дизайнерский свитер Nike с уникальным графическим принтом'
-            },
-            {
-                id: 5,
-                name: 'Louis Vuitton Wallet',
-                price: 8999,
-                image: 'assets/images/louis-vuitton-wallet.jpg',
-                description: 'Классический кошелек Louis Vuitton из коллекции Damier Graphite'
-            }
-        ];
-
-        function displayProducts() {
-            const grid = document.getElementById('productGrid');
-            grid.innerHTML = products.map(product => `
-                <div class="product-card">
-                    <img src="${product.image}" alt="${product.name}" class="product-image">
-                    <div class="product-name">${product.name}</div>
-                    <div class="product-description">${product.description}</div>
-                    <div class="product-price">${product.price} Kč</div>
-                    <button class="add-to-cart" onclick="addToCart(${product.id})">
-                        Добавить в корзину
-                    </button>
-                </div>
-            `).join('');
-        }
-
-        function addToCart(productId) {
-            // Находим товар по ID
-            const product = products.find(p => p.id === productId);
-            if (!product) return;
-
-            // Получаем текущую корзину из localStorage
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            
-            // Добавляем товар в корзину
-            cart.push(product);
-            
-            // Сохраняем обновленную корзину
-            localStorage.setItem('cart', JSON.stringify(cart));
-            
-            // Анимация добавления в корзину
-            const button = event.target;
-            const productCard = button.closest('.product-card');
-            const productImage = productCard.querySelector('.product-image');
-            const cartLink = document.querySelector('a[href="cart.html"]');
-            
-            // Создаем летящее изображение
-            const flyingImage = productImage.cloneNode();
-            flyingImage.style.position = 'fixed';
-            flyingImage.style.height = '100px';
-            flyingImage.style.width = '100px';
-            flyingImage.style.objectFit = 'cover';
-            flyingImage.style.zIndex = '1000';
-            
-            // Получаем координаты
-            const startPos = productImage.getBoundingClientRect();
-            const endPos = cartLink.getBoundingClientRect();
-            
-            flyingImage.style.left = startPos.left + 'px';
-            flyingImage.style.top = startPos.top + 'px';
-            
-            document.body.appendChild(flyingImage);
-            
-            // Анимация
-            flyingImage.style.transition = 'all 0.8s ease-in-out';
-            flyingImage.style.transform = 'scale(0.2)';
-            flyingImage.style.left = endPos.left + 'px';
-            flyingImage.style.top = endPos.top + 'px';
-            
-            // Эффект нажатия кнопки
-            button.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                button.style.transform = 'scale(1)';
-            }, 200);
-            
-            // Удаляем элемент после анимации
-            setTimeout(() => {
-                flyingImage.remove();
-                cartLink.style.transform = 'scale(1.2)';
-                setTimeout(() => {
-                    cartLink.style.transform = 'scale(1)';
-                }, 200);
-            }, 800);
-        }
-
-        // Вызываем функцию при загрузке страницы
-        document.addEventListener('DOMContentLoaded', function() {
-            displayProducts();
-        });
-    </script>
+    <script src="/lakt4-store/script.js"></script>
 </body>
 </html>

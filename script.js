@@ -62,17 +62,47 @@ function loadCartItems() {
     const cartContainer = document.getElementById('cartItems');
     if (!cartContainer) return;
 
-    const products = {
-        1: { name: 'Nike Socs', price: '50 Kč ($2.04)', image: 'https://via.placeholder.com/300x300?text=Nike+Socks' },
-        2: { name: 'Свитер Nike', price: '3500 Kč ($145)', image: 'https://via.placeholder.com/300x300?text=Nike+Sweater' },
-        3: { name: 'Кофта Nike', price: '2699 Kč ($110)', image: 'https://via.placeholder.com/300x300?text=Nike+Hoodie' },
-        4: { name: 'Louis Vuitton', price: '4999 Kč ($205)', image: 'https://via.placeholder.com/300x300?text=Louis+Vuitton+Wallet' },
-        5: { name: 'Сумка Goyard', price: '12999 Kč ($530)', image: 'https://via.placeholder.com/300x300?text=Goyard+Bag' }
-    };
+    const products = [
+        {
+            id: 1,
+            name: "Nike Sweater",
+            price: 2999,
+            image: "/lakt4-store/assets/images/nike-sweater.jpg",
+            description: "Стильный свитер Nike"
+        },
+        {
+            id: 2,
+            name: "Louis Vuitton Wallet",
+            price: 4999,
+            image: "/lakt4-store/assets/images/lv-wallet.jpg",
+            description: "Кошелек Louis Vuitton"
+        },
+        {
+            id: 3,
+            name: "Goyard Bag",
+            price: 7999,
+            image: "/lakt4-store/assets/images/goyard.jpg",
+            description: "Сумка Goyard"
+        },
+        {
+            id: 4,
+            name: "Stussy x Nike",
+            price: 3499,
+            image: "/lakt4-store/assets/images/stussy-nike.jpg",
+            description: "Коллаборация Stussy x Nike"
+        },
+        {
+            id: 5,
+            name: "Nike Socks",
+            price: 499,
+            image: "/lakt4-store/assets/images/носки.jpg",
+            description: "Носки Nike"
+        }
+    ];
 
     cartContainer.innerHTML = '';
     cart.forEach(productId => {
-        const product = products[productId];
+        const product = products.find(p => p.id === productId);
         if (product) {
             const cartItem = document.createElement('div');
             cartItem.className = 'cart-item';
@@ -80,7 +110,7 @@ function loadCartItems() {
                 <img src="${product.image}" alt="${product.name}" style="width: 100px; height: 100px; object-fit: cover;">
                 <div class="cart-item-details">
                     <h3>${product.name}</h3>
-                    <p>${product.price}</p>
+                    <p>${product.price} Kč</p>
                 </div>
                 <button onclick="removeFromCart(${productId})" class="remove-btn">Удалить</button>
             `;

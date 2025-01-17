@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Корзина - Lakt4</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/lakt4-store/styles.css">
     <style>
         /* Светлая тема */
         :root {
@@ -262,53 +262,6 @@
         </div>
     </footer>
 
-    <script>
-        // Проверяем тему из localStorage при загрузке страницы
-        document.addEventListener('DOMContentLoaded', function() {
-            const theme = localStorage.getItem('theme') || 'dark';
-            document.documentElement.setAttribute('data-theme', theme);
-            displayCartItems();
-        });
-
-        function displayCartItems() {
-            const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-            const cartContainer = document.querySelector('.cart-items');
-            const totalElement = document.getElementById('totalAmount');
-            
-            if (cartItems.length === 0) {
-                cartContainer.innerHTML = '<p class="empty-cart">Ваша корзина пуста</p>';
-                totalElement.textContent = '0';
-                return;
-            }
-
-            let total = 0;
-            const itemsHTML = cartItems.map((item, index) => {
-                total += item.price;
-                return `
-                    <div class="cart-item">
-                        <img src="${item.image}" alt="${item.name}" class="cart-item-image">
-                        <div class="cart-item-info">
-                            <h3 class="cart-item-name">${item.name}</h3>
-                            <p class="cart-item-description">${item.description}</p>
-                            <p class="cart-item-price">${item.price} Kč</p>
-                        </div>
-                        <button class="remove-button" onclick="removeFromCart(${index})">
-                            Удалить
-                        </button>
-                    </div>
-                `;
-            }).join('');
-
-            cartContainer.innerHTML = itemsHTML;
-            totalElement.textContent = total;
-        }
-
-        function removeFromCart(index) {
-            let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-            cartItems.splice(index, 1);
-            localStorage.setItem('cart', JSON.stringify(cartItems));
-            displayCartItems();
-        }
-    </script>
+    <script src="/lakt4-store/script.js"></script>
 </body>
 </html>
