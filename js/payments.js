@@ -1,147 +1,136 @@
-// Инициализация PayPal
-function initPayPal() {
-    paypal.Buttons({
-        createOrder: function(data, actions) {
-            return actions.order.create({
-                purchase_units: [{
-                    amount: {
-                        value: calculateTotal()
-                    }
-                }]
-            });
+// Инициализация платежных систем
+document.addEventListener('DOMContentLoaded', function() {
+    initializePayments();
+    loadOrderItems();
+});
+
+let selectedPayment = '';
+
+function initializePayments() {
+    // Добавляем обработчики для выбора способа оплаты
+    document.querySelectorAll('input[name="payment"]').forEach(input => {
+        input.addEventListener('change', function() {
+            selectedPayment = this.value;
+            highlightSelectedPayment(this);
+        });
+    });
+
+    // Добавляем обработчик отправки формы
+    const form = document.getElementById('checkoutForm');
+    if (form) {
+        form.addEventListener('submit', handleCheckoutSubmit);
+    }
+}
+
+function highlightSelectedPayment(input) {
+    // Убираем выделение у всех методов оплаты
+    document.querySelectorAll('.payment-method').forEach(method => {
+        method.classList.remove('selected');
+    });
+    // Добавляем выделение выбранному методу
+    input.closest('.payment-method').classList.add('selected');
+}
+
+function loadOrderItems() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const products = [
+        {
+            id: 1,
+            name: "Nike Sweater",
+            price: 2999,
+            image: "/lakt4-store/assets/images/nike-sweater.jpg",
+            description: "Стильный свитер Nike"
         },
-        onApprove: function(data, actions) {
-            return actions.order.capture().then(function(details) {
-                handleSuccessfulPayment('paypal', details.id);
-            });
+        {
+            id: 2,
+            name: "Louis Vuitton Wallet",
+            price: 4999,
+            image: "/lakt4-store/assets/images/lv-wallet.jpg",
+            description: "Кошелек Louis Vuitton"
+        },
+        {
+            id: 3,
+            name: "Goyard Bag",
+            price: 7999,
+            image: "/lakt4-store/assets/images/goyard.jpg",
+            description: "Сумка Goyard"
+        },
+        {
+            id: 4,
+            name: "Stussy x Nike",
+            price: 3499,
+            image: "/lakt4-store/assets/images/stussy-nike.jpg",
+            description: "Коллаборация Stussy x Nike"
+        },
+        {
+            id: 5,
+            name: "Nike Socks",
+            price: 499,
+            image: "/lakt4-store/assets/images/носки.jpg",
+            description: "Носки Nike"
         }
-    }).render('#paypal-button-container');
-}
+    ];
 
-// Инициализация Monobank
-function initMonobank() {
-    const monoSettings = {
-        merchantId: 'YOUR_MONO_MERCHANT_ID', // Замените на ваш ID мерчанта
-        amount: calculateTotal() * 100, // Сумма в копейках
-        currencyCode: 980, // UAH
-        merchantPaymInfo: {
-            reference: generateOrderId(),
-            destination: 'Оплата заказа в Lakt4'
+    const orderItems = document.getElementById('orderItems');
+    if (!orderItems) return;
+
+    let total = 0;
+    const itemsHTML = cart.map(productId => {
+        const product = products.find(p => p.id === productId);
+        if (product) {
+            total += product.price;
+            return `
+                <div class="order-item">
+                    <div class="order-item-info">
+                        <span class="order-item-name">${product.name}</span>
+                        <span class="order-item-description">${product.description}</span>
+                    </div>
+                    <span class="order-item-price">${product.price} Kč</span>
+                </div>
+            `;
         }
-    };
+        return '';
+    }).join('');
 
-    const button = document.querySelector('#monobank-button');
-    button.addEventListener('click', () => {
-        monobank.send(monoSettings)
-            .then(response => {
-                handleSuccessfulPayment('monobank', response.invoiceId);
-            })
-            .catch(error => {
-                handlePaymentError('monobank', error);
-            });
-    });
+    orderItems.innerHTML = itemsHTML || '<p>Корзина пуста</p>';
+    const totalElement = document.getElementById('totalAmount');
+    if (totalElement) {
+        totalElement.textContent = total;
+    }
 }
 
-// Инициализация PrivatBank
-function initPrivatBank() {
-    const privatSettings = {
-        merchant_id: 'YOUR_PRIVAT_MERCHANT_ID', // Замените на ваш ID мерчанта
-        order_id: generateOrderId(),
-        amount: calculateTotal(),
-        currency: 'UAH',
-        description: 'Оплата заказа в Lakt4'
-    };
+async function handleCheckoutSubmit(event) {
+    event.preventDefault();
 
-    const button = document.querySelector('#privatbank-button');
-    button.addEventListener('click', () => {
-        LiqPay.checkout(privatSettings)
-            .then(response => {
-                handleSuccessfulPayment('privatbank', response.payment_id);
-            })
-            .catch(error => {
-                handlePaymentError('privatbank', error);
-            });
-    });
-}
+    if (!selectedPayment) {
+        alert('Пожалуйста, выберите способ оплаты');
+        return;
+    }
 
-// Обработка успешного платежа
-function handleSuccessfulPayment(provider, transactionId) {
-    // Сохраняем информацию о заказе
-    const orderData = {
-        orderId: generateOrderId(),
-        transactionId: transactionId,
-        provider: provider,
-        amount: calculateTotal(),
-        items: getCart(),
-        customerInfo: getCustomerInfo(),
-        date: new Date().toISOString()
-    };
-
-    // Отправляем данные на сервер
-    saveOrder(orderData).then(() => {
-        // Очищаем корзину
-        clearCart();
-        // Перенаправляем на страницу успешного заказа
-        window.location.href = 'order-success.html?orderId=' + orderData.orderId;
-    });
-}
-
-// Обработка ошибки платежа
-function handlePaymentError(provider, error) {
-    console.error(`Ошибка оплаты через ${provider}:`, error);
-    alert('Произошла ошибка при оплате. Пожалуйста, попробуйте снова или выберите другой способ оплаты.');
-}
-
-// Генерация ID заказа
-function generateOrderId() {
-    return 'ORDER-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
-}
-
-// Получение информации о покупателе из формы
-function getCustomerInfo() {
-    return {
+    const formData = {
         name: document.getElementById('name').value,
         email: document.getElementById('email').value,
         phone: document.getElementById('phone').value,
-        address: document.getElementById('address').value
+        address: document.getElementById('address').value,
+        city: document.getElementById('city').value,
+        paymentMethod: selectedPayment,
+        items: JSON.parse(localStorage.getItem('cart') || '[]')
     };
+
+    try {
+        // В реальном приложении здесь был бы запрос к серверу
+        console.log('Отправка заказа:', formData);
+
+        // Очищаем корзину
+        localStorage.setItem('cart', '[]');
+
+        // Показываем сообщение об успехе
+        alert('Спасибо за заказ! Мы свяжемся с вами в ближайшее время.');
+
+        // Перенаправляем на главную страницу
+        window.location.href = '/lakt4-store/index.html';
+    } catch (error) {
+        console.error('Ошибка при оформлении заказа:', error);
+        alert('Произошла ошибка при оформлении заказа. Пожалуйста, попробуйте снова.');
+    }
 }
-
-// Подсчет общей суммы заказа
-function calculateTotal() {
-    const cart = getCart();
-    return cart.reduce((total, item) => total + item.price, 0);
-}
-
-// Инициализация всех способов оплаты при загрузке страницы
-document.addEventListener('DOMContentLoaded', function() {
-    // Загружаем необходимые скрипты
-    loadPaymentScripts().then(() => {
-        initPayPal();
-        initMonobank();
-        initPrivatBank();
-    });
-
-    // Обработка отправки формы
-    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const selectedPayment = document.querySelector('input[name="payment"]:checked');
-        if (!selectedPayment) {
-            alert('Пожалуйста, выберите способ оплаты');
-            return;
-        }
-
-        // Запускаем соответствующий процесс оплаты
-        switch (selectedPayment.value) {
-            case 'paypal':
-                document.querySelector('#paypal-button-container button').click();
-                break;
-            case 'monobank':
-                document.querySelector('#monobank-button').click();
-                break;
-            case 'privatbank':
-                document.querySelector('#privatbank-button').click();
-                break;
-        }
-    });
-});
