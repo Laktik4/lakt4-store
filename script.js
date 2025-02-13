@@ -1,231 +1,173 @@
-let cart = [];
+document.addEventListener('DOMContentLoaded', () => {
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
 
-// Безопасное сохранение значения в localStorage
-function safeSetItem(key, value) {
-    try {
-        localStorage.setItem(key, JSON.stringify(value));
-    } catch (e) {
-        console.error('Ошибка сохранения значения в localStorage:', e);
-    }
-}
+    // Header animation on scroll
+    const header = document.querySelector('header');
+    let lastScroll = 0;
 
-// Безопасное получение значения из localStorage
-function safeGetItem(key) {
-    try {
-        return JSON.parse(localStorage.getItem(key));
-    } catch (e) {
-        console.error('Ошибка получения значения из localStorage:', e);
-        return null;
-    }
-}
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
 
-// Безопасное добавление товара в корзину
-function safelyAddToCart(product) {
-    return product;
-}
-
-// Безопасное сохранение корзины
-function saveCart(cart) {
-    safeSetItem('cart', cart);
-}
-
-// Безопасное получение корзины
-function getCart() {
-    return safeGetItem('cart') || [];
-}
-
-// Функция отображения товаров
-function displayProducts() {
-    const grid = document.getElementById('productGrid');
-    if (!grid) return;
-
-    const products = [
-        {
-            id: 1,
-            name: "Nike Sweater",
-            price: 2999,
-            image: "./assets/images/nike-sweater.jpg",
-            description: "Стильный свитер Nike"
-        },
-        {
-            id: 2,
-            name: "Louis Vuitton Wallet",
-            price: 4999,
-            image: "./assets/images/lv-wallet.jpg",
-            description: "Кошелек Louis Vuitton"
-        },
-        {
-            id: 3,
-            name: "Goyard Bag",
-            price: 7999,
-            image: "./assets/images/goyard.jpg",
-            description: "Сумка Goyard"
-        },
-        {
-            id: 4,
-            name: "Stussy x Nike",
-            price: 3499,
-            image: "./assets/images/stussy-nike.jpg",
-            description: "Коллаборация Stussy x Nike"
-        },
-        {
-            id: 5,
-            name: "Nike Socks",
-            price: 499,
-            image: "./assets/images/носки.jpg",
-            description: "Носки Nike"
+        if (currentScroll <= 0) {
+            header.classList.remove('scroll-up');
+            return;
         }
-    ];
 
-    grid.innerHTML = products.map(product => `
-        <div class="product-card">
-            <img src="${product.image}" alt="${product.name}" class="product-image">
-            <div class="product-name">${product.name}</div>
-            <div class="product-description">${product.description}</div>
-            <div class="product-price">${product.price} Kč</div>
-            <button class="add-to-cart" onclick="addToCart(${product.id})">
-                Добавить в корзину
-            </button>
-        </div>
-    `).join('');
-}
-
-// Функция добавления в корзину
-function addToCart(productId) {
-    // Получаем текущую корзину из localStorage
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    
-    // Добавляем товар в корзину
-    cart.push(productId);
-    
-    // Сохраняем обновленную корзину
-    localStorage.setItem('cart', JSON.stringify(cart));
-    
-    // Анимация добавления в корзину
-    const button = event.target;
-    button.style.transform = 'scale(0.95)';
-    setTimeout(() => {
-        button.style.transform = 'scale(1)';
-    }, 200);
-
-    // Анимация иконки корзины
-    const cartLink = document.querySelector('a[href="cart.html"]');
-    if (cartLink) {
-        cartLink.style.transform = 'scale(1.2)';
-        setTimeout(() => {
-            cartLink.style.transform = 'scale(1)';
-        }, 200);
-    }
-}
-
-// Функция отображения корзины
-function displayCart() {
-    const cartContainer = document.getElementById('cartItems');
-    if (!cartContainer) return;
-
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let total = 0;
-
-    if (cart.length === 0) {
-        cartContainer.innerHTML = '<p class="empty-cart">Ваша корзина пуста</p>';
-        document.getElementById('totalAmount').textContent = '0';
-        return;
-    }
-
-    const products = [
-        {
-            id: 1,
-            name: "Nike Sweater",
-            price: 2999,
-            image: "./assets/images/nike-sweater.jpg",
-            description: "Стильный свитер Nike"
-        },
-        {
-            id: 2,
-            name: "Louis Vuitton Wallet",
-            price: 4999,
-            image: "./assets/images/lv-wallet.jpg",
-            description: "Кошелек Louis Vuitton"
-        },
-        {
-            id: 3,
-            name: "Goyard Bag",
-            price: 7999,
-            image: "./assets/images/goyard.jpg",
-            description: "Сумка Goyard"
-        },
-        {
-            id: 4,
-            name: "Stussy x Nike",
-            price: 3499,
-            image: "./assets/images/stussy-nike.jpg",
-            description: "Коллаборация Stussy x Nike"
-        },
-        {
-            id: 5,
-            name: "Nike Socks",
-            price: 499,
-            image: "./assets/images/носки.jpg",
-            description: "Носки Nike"
+        if (currentScroll > lastScroll && !header.classList.contains('scroll-down')) {
+            header.classList.remove('scroll-up');
+            header.classList.add('scroll-down');
+        } else if (currentScroll < lastScroll && header.classList.contains('scroll-down')) {
+            header.classList.remove('scroll-down');
+            header.classList.add('scroll-up');
         }
-    ];
+        lastScroll = currentScroll;
+    });
 
-    const itemsHTML = cart.map((productId, index) => {
-        const product = products.find(p => p.id === productId);
-        if (product) {
-            total += product.price;
-            return `
-                <div class="cart-item">
-                    <img src="${product.image}" alt="${product.name}">
-                    <div class="cart-item-info">
-                        <h3 class="cart-item-name">${product.name}</h3>
-                        <p class="cart-item-description">${product.description}</p>
-                        <p class="cart-item-price">${product.price} Kč</p>
-                    </div>
-                    <button class="remove-button" onclick="removeFromCart(${index})">
-                        Удалить
-                    </button>
-                </div>
-            `;
+    // Contact button functionality
+    const contactBtn = document.querySelector('.contact-btn');
+    contactBtn.addEventListener('click', () => {
+        // You can replace this with your preferred contact method
+        window.location.href = 'mailto:info@lakt4.club';
+    });
+
+    // Booking button functionality
+    const bookingBtn = document.querySelector('.booking-btn');
+    bookingBtn.addEventListener('click', () => {
+        // You can replace this with your booking system
+        alert('Бронирование будет доступно в ближайшее время!');
+    });
+
+    // Add neon hover effect to cards
+    const cards = document.querySelectorAll('.service-card, .membership-card, .testimonial-card');
+    cards.forEach(card => {
+        card.addEventListener('mouseover', () => {
+            card.style.boxShadow = '0 0 20px rgba(0, 255, 136, 0.3)';
+        });
+
+        card.addEventListener('mouseout', () => {
+            card.style.boxShadow = 'none';
+        });
+    });
+
+    // Modal handling
+    const bookingBtnModal = document.querySelector('.booking-btn');
+    const contactBtnModal = document.querySelector('.contact-btn');
+    const modals = document.querySelectorAll('.modal');
+    const closeButtons = document.querySelectorAll('.close-modal');
+    const paymentMethod = document.getElementById('paymentMethod');
+    const cardDetails = document.getElementById('cardDetails');
+
+    // Open modals
+    bookingBtnModal.addEventListener('click', () => {
+        document.getElementById('bookingModal').classList.add('active');
+    });
+
+    contactBtnModal.addEventListener('click', () => {
+        document.getElementById('contactModal').classList.add('active');
+    });
+
+    // Close modals
+    closeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            button.closest('.modal').classList.remove('active');
+        });
+    });
+
+    // Close modal when clicking outside
+    modals.forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+    });
+
+    // Handle payment method change
+    paymentMethod.addEventListener('change', (e) => {
+        if (e.target.value === 'card') {
+            cardDetails.classList.remove('hidden');
+        } else {
+            cardDetails.classList.add('hidden');
         }
-        return '';
-    }).join('');
+    });
 
-    cartContainer.innerHTML = itemsHTML;
+    // Form validation and submission
+    const bookingForm = document.getElementById('bookingForm');
+    const contactForm = document.getElementById('contactForm');
 
-    document.getElementById('totalAmount').textContent = total;
-}
+    bookingForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = {
+            name: document.getElementById('bookingName').value,
+            date: document.getElementById('bookingDate').value,
+            time: document.getElementById('bookingTime').value,
+            service: document.getElementById('bookingService').value,
+            paymentMethod: document.getElementById('paymentMethod').value,
+        };
 
-// Функция удаления из корзины
-function removeFromCart(index) {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    cart.splice(index, 1);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    displayCart();
-}
+        if (formData.paymentMethod === 'card') {
+            formData.cardNumber = document.getElementById('cardNumber').value;
+            formData.cardExpiry = document.getElementById('cardExpiry').value;
+            formData.cardCVV = document.getElementById('cardCVV').value;
+        }
 
-// Безопасное сохранение темы
-function saveTheme(theme) {
-    safeSetItem('theme', theme);
-}
+        // Here you would typically send the data to your server
+        console.log('Booking submitted:', formData);
+        alert('Бронирование успешно отправлено! Мы свяжемся с вами для подтверждения.');
+        bookingForm.reset();
+        document.getElementById('bookingModal').classList.remove('active');
+    });
 
-// Безопасное получение темы
-function getTheme() {
-    return safeGetItem('theme') || 'dark';
-}
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = {
+            name: document.getElementById('contactName').value,
+            email: document.getElementById('contactEmail').value,
+            message: document.getElementById('contactMessage').value,
+        };
 
-// Переключатель темы
-function toggleTheme(theme) {
-    document.body.className = theme;
-    saveTheme(theme);
-}
+        // Here you would typically send the data to your server
+        console.log('Contact form submitted:', formData);
+        alert('Сообщение успешно отправлено! Мы ответим вам в ближайшее время.');
+        contactForm.reset();
+        document.getElementById('contactModal').classList.remove('active');
+    });
 
-// Загрузка темы
-const savedTheme = getTheme();
-document.body.className = savedTheme;
+    // Card input formatting
+    const cardNumber = document.getElementById('cardNumber');
+    const cardExpiry = document.getElementById('cardExpiry');
+    const cardCVV = document.getElementById('cardCVV');
 
-// Инициализация при загрузке страницы
-document.addEventListener('DOMContentLoaded', function() {
-    displayProducts();
-    displayCart();
+    cardNumber.addEventListener('input', (e) => {
+        let value = e.target.value.replace(/\D/g, '');
+        value = value.replace(/(.{4})/g, '$1 ').trim();
+        e.target.value = value.substring(0, 19);
+    });
+
+    cardExpiry.addEventListener('input', (e) => {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length >= 2) {
+            value = value.substring(0, 2) + '/' + value.substring(2);
+        }
+        e.target.value = value.substring(0, 5);
+    });
+
+    cardCVV.addEventListener('input', (e) => {
+        let value = e.target.value.replace(/\D/g, '');
+        e.target.value = value.substring(0, 3);
+    });
 });

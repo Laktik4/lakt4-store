@@ -3,36 +3,221 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lakt4 - Магазин одежды</title>
+    <title>Lakt4 Gaming Club</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <header>
         <nav>
-            <div class="logo">Lakt4</div>
-            <ul class="nav-links">
-                <li><a href="index.html">Вещи</a></li>
-                <li><a href="cart.html">Корзина</a></li>
-                <li><a href="profile.html">Профиль</a></li>
-            </ul>
+            <div class="logo">LAKT4</div>
+            <div class="menu">
+                <a href="#about">О нас</a>
+                <a href="#services">Услуги</a>
+                <a href="#memberships">Клубные карты</a>
+                <div class="dropdown">
         </nav>
     </header>
 
     <main>
-        <div class="product-grid" id="productGrid">
-            <!-- Товары будут добавлены через JavaScript -->
-        </div>
-    </main>
+        <section id="hero" class="hero-section">
+            <div class="hero-content">
+                <h1>LAKT4 Gaming Club</h1>
+                <p>Погрузись в мир киберспорта и развлечений</p>
+            </div>
+        </section>
 
+        <section id="about" class="about-section">
+            <h2>О нашем клубе</h2>
+            <p>🔥 Что вас ждет в Lakt4 Gaming Club? 🔥 </p>
+            <p>   ✅ Мощные игровые компьютеры – топовые комплектующие, быстрые мониторы и удобные геймерские кресла. </p>
+            <p>   ✅ Кальянная зона – расслабься в уютной атмосфере с качественными ароматными кальянами. </p>
+            <p>   ✅ Бар с напитками – большой выбор энергетиков, кофе, коктейлей и закусок. </p>
+            <p>   ✅ Про- и VIP-зоны – отдельные помещения с премиальным оборудованием и комфортом. </p>
+            <p>   ✅ Клубные карты – выбирай свой уровень доступа: Стандарт, Про или Про+ с эксклюзивными бонусами. </p>
+            <p>   ✅ Онлайн-бронирование – легко резервируй места прямо на сайте. </p>
+                
+            <p>   🚀 Погружайся в мир киберспорта и отдыха с нами! 🚀 </p>
+                
+        </section>
+
+        <section id="services" class="services-section">
+            <h2>Наши услуги</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>Игровые ПК</h3>
+                    <p>Мощные компьютеры с топовыми видеокартами и мониторами 240 Гц</p>
+                </div>
+                <div class="service-card">
+                    <h3>Кальянная зона</h3>
+                    <p>Премиальные кальяны и профессиональные кальянщики</p>
+                </div>
+                <div class="service-card">
+                    <h3>VIP-комнаты</h3>
+                    <p>Отдельные комнаты с максимальным комфортом</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="memberships" class="memberships-section">
+            <h2>Клубные карты</h2>
+            <div class="membership-cards">
+                <div class="membership-card">
+                    <h3>Стандарт</h3>
+                    <ul>
+                        <li>10% скидка на игры</li>
+                        <li>Бонусные часы</li>
+                        <li>Базовая поддержка</li>
+                    </ul>
+                </div>
+                <div class="membership-card">
+                    <h3>Про</h3>
+                    <ul>
+                        <li>20% скидка на игры</li>
+                        <li>Приоритетное бронирование</li>
+                        <li>Скидка на кальяны</li>
+                        <li>Расширенная поддержка</li>
+                    </ul>
+                </div>
+                <div class="membership-card featured">
+                    <h3>Про+</h3>
+                    <ul>
+                        <li>30% скидка на всё</li>
+                        <li>VIP-поддержка 24/7</li>
+                        <li>Эксклюзивные мероприятия</li>
+                        <li>Доступ к VIP-зоне</li>
+                        <li>Бесплатные напитки</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials" class="testimonials-section">
+            <h2>Отзывы</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p>"Лучший гейминг-клуб в городе! Отличные компьютеры и прекрасная атмосфера."</p>
+                    <span class="author">- Александр П.</span>
+                </div>
+                <div class="testimonial-card">
+                    <p>"VIP-зона просто космос! Отдельное спасибо за кальяны и обслуживание."</p>
+                    <span class="author">- Мария К.</span>
+                </div>
+                <div class="testimonial-card">
+                    <p>"Про+ карта полностью окупается. Теперь хожу сюда постоянно!"</p>
+                    <span class="author">- Дмитрий С.</span>
+                </div>
+            </div>
+        </section>
+    </main>
+<!-- Booking Modal -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Бронирование</h2>
+            <form id="bookingForm">
+                <div class="form-group">
+                    <label for="bookingName">Ваше имя</label>
+                    <input type="text" id="bookingName" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookingDate">Дата</label>
+                    <input type="date" id="bookingDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookingTime">Время</label>
+                    <input type="time" id="bookingTime" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookingService">Услуга</label>
+                    <select id="bookingService" required>
+                        <option value="pc">Игровой ПК</option>
+                        <option value="vip">VIP-комната</option>
+                        <option value="hookah">Кальян</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="paymentMethod">Способ оплаты</label>
+                    <select id="paymentMethod" required>
+                        <option value="card">Картой онлайн</option>
+                        <option value="cash">На месте</option>
+                    </select>
+                </div>
+                <div id="cardDetails" class="form-group hidden">
+                    <label for="cardNumber">Номер карты</label>
+                    <input type="text" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX">
+                    <label for="cardExpiry">Срок действия</label>
+                    <input type="text" id="cardExpiry" placeholder="MM/YY">
+                    <label for="cardCVV">CVV</label>
+                    <input type="text" id="cardCVV" placeholder="XXX">
+                </div>
+                <button type="submit" class="neon-button">Забронировать</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Связаться с нами</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <p>Email: <a href="mailto:laktionov1bogdan@gmail.com">laktionov1bogdan@gmail.com</a></p>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-telegram"></i>
+                    <p>Telegram: <a href="https://t.me/Lakt4" target="_blank">@Lakt4</a></p>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <p>Телефон: <a href="tel:+420602759157">+420 602 759 157</a></p>
+                </div>
+            </div>
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="contactName">Ваше имя</label>
+                    <input type="text" id="contactName" required>
+                </div>
+                <div class="form-group">
+                    <label for="contactEmail">Email</label>
+                    <input type="email" id="contactEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="contactMessage">Сообщение</label>
+                    <textarea id="contactMessage" required></textarea>
+                </div>
+                <button type="submit" class="neon-button">Отправить</button>
+            </form>
+        </div>
+    </div>
     <footer>
-        <p class="copyright">&copy; 2025 Lakt4. Все права защищены.</p>
-        <div class="social-links">
-            <a href="https://www.instagram.com/llakt4/" target="_blank" class="social-link">
-                <img src="assets/images/instagram-icon.svg" alt="Instagram" class="social-icon">
-                @llakt4
-            </a>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <p>Телефон: +420602759157</p>
+                <p>Email: laktionov1bogdan@gmail.com</p>
+            </div>
+            <div class="footer-section">
+                <h4>Режим работы</h4>
+                <p>24/7</p>
+            </div>
+            <div class="footer-section">
+                <h4>Социальные сети</h4>
+                <div class="social-links">
+                    <a href="@Lakt4" class="social-link">Telegram</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Lakt4 Gaming Club. Сайт шуточный </p>
         </div>
     </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
